@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# Virtual environments
+venv/
+.env
+
+# Docker
+*.pid
+*.seed
+*.bak
+*.swp
+.dockerignore
+
+# VSCode or other editor settings
+.vscode/
+.idea/
+
+# System
+.DS_Store
+Thumbs.db
