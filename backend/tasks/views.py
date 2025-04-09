@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .forms import TaskForm
 from django.contrib.auth.decorators import login_required
 from .models import Task
 from django.utils import timezone
+from tasks.tasks import send_task_reminder
 
 @login_required
 def create_task(request):
@@ -64,3 +65,7 @@ def toggle_task_completion(request, task_id):
             print(f'User {request.user} is not authorised to delete task assigned to {task.user} - id: {task_id}')
     except Exception as e:
         print(f"Requested task not able to be modified - id {task_id} - {e}")
+
+
+def send_task_reminder(task):
+    send_task_reminder.delay(task.uuid)
