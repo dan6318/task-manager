@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Task
 from django.utils import timezone
 from tasks.tasks import send_task_reminder
+import pytz
 
 @login_required
 def create_task(request):
@@ -13,6 +14,7 @@ def create_task(request):
             task = form.save(commit=False)
             if request.user:
                 task.user = request.user
+                timezone.make_aware(task.due_date, pytz.timezone("Europe/London"))
                 task.save()
                 return redirect('task_list')
     else:
