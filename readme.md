@@ -24,8 +24,9 @@ From the command line, navigate to this repo and `cd` into the `backend/` direct
 
 ```bash
 docker-compose build
-docker-compose up
-docker-compose exec web python manage.py migrate
+docker-compose up -d redis
+docker-compose run web python manage.py migrate
+docker-compose up -d
 docker-compose exec web python manage.py createsuperuser
 ```
 
