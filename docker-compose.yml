@@ -1,11 +1,34 @@
-# docker-compose.yml
-
 services:
   web:
-    build: .
+    build: ./backend
+    working_dir: /code
+    volumes:
+      - ./backend:/code
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
+    depends_on:
+      - redis
+
+  celery:
+    build: ./backend
+    working_dir: /code
     volumes:
-      - ./backend:/code/backend
-    env_file:
-      - .env
+      - ./backend:/code
+    command: celery -A core worker --loglevel=info --pool=solo
+    depends_on:
+      - redis
+
+  beat:
+    build: ./backend
+    working_dir: /code
+    volumes:
+      - ./backend:/code
+    command: celery -A core beat --loglevel=info
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
