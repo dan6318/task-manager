@@ -37,11 +37,43 @@
             font-weight: bold;
             margin: 0;
         }
+        .actions a {
+            margin-left: 10px;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .toggle-btn {
+            background-color: #e0f7fa;
+        }
+        .delete-btn {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border-color: #d32f2f;
+        }
+        .create-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #4caf50;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
     <h1>Your Task List</h1>
+
+    <div class="filters" style="margin-bottom: 20px; text-align: center;">
+      <a href="{% url 'task_list' %}" class="filter-btn">All</a>
+      <a href="{% url 'task_list_incomplete' %}" class="filter-btn">Incomplete</a>
+      <a href="{% url 'task_list_complete' %}" class="filter-btn">Complete</a>
+      <a href="{% url 'task_list_overdue' %}" class="filter-btn">Overdue</a>
+    </div>
 
     <ul class="task-list">
         {% for task in tasks %}
@@ -53,12 +85,11 @@
                     {% endif %}
                     <div class="task-meta">Priority: {{ task.get_priority_display }}</div>
                 </div>
-                <div>
-                    {% if task.completed %}
-                        ✅
-                    {% else %}
-                        ❌
-                    {% endif %}
+                <div class="actions">
+                    <a class="toggle-btn" href="{% url 'toggle_task' task.uuid %}">
+                        {% if task.completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+                    </a>
+                    <a class="delete-btn" href="{% url 'delete_task' task.uuid %}">Delete</a>
                 </div>
             </li>
         {% empty %}
@@ -66,7 +97,7 @@
         {% endfor %}
     </ul>
 
-    <a href="{% url 'create_task' %}">➕ Create New Task</a>
+    <a class="create-link" href="{% url 'create_task' %}">➕ Create New Task</a>
 
 </body>
 </html>

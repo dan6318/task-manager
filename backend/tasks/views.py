@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TaskForm
 from django.contrib.auth.decorators import login_required
 from .models import Task
+from django.utils import timezone
 
 @login_required
 def create_task(request):
@@ -20,9 +21,19 @@ def create_task(request):
 
 @login_required
 def task_list(request):
-    tasks = Task.objects.filter(user=request.user)
-    return render(request, 'tasks/tasks_list.html', {'tasks': tasks})
+    return render(request, 'tasks/tasks_list.html', {'tasks': Task.objects.filter(user=request.user)})
 
+@login_required
+def task_list_incomplete(request):
+    return render(request, 'tasks/tasks_list.html', {'tasks': Task.objects.filter(user=request.user, completed=False)})
+
+@login_required
+def task_list_complete(request):
+    return render(request, 'tasks/tasks_list.html', {'tasks': Task.objects.filter(user=request.user, completed=True)})
+
+@login_required
+def task_list_overdue(request):
+    return render(request, 'tasks/tasks_list.html', {'tasks': Task.objects.filter(user=request.user, completed=False, due_date__lte=timezone.now())})
 
 @login_required
 def delete_task(request, task_id):
