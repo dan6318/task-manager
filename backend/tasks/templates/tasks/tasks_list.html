@@ -81,7 +81,7 @@
                 <div>
                     <p class="task-title">{{ task.title }}</p>
                     {% if task.due_date %}
-                        <div class="task-meta">Due: {{ task.due_date|date:"D, M j, H:i" }}</div>
+                        <div class="task-meta">Due: {{ task.due_date|date:"D, M j, Y, H:i" }}</div>
                     {% endif %}
                     <div class="task-meta">Priority: {{ task.get_priority_display }}</div>
                 </div>
