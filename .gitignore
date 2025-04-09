@@ -22,3 +22,5 @@ venv/
 # System
 .DS_Store
 Thumbs.db
+backend/celerybeat-schedule.dat
+backend/celerybeat-schedule.dir
